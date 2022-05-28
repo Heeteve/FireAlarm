@@ -18,15 +18,16 @@ Ticker ticker5; //气体报警计时器
 
 static WiFiClient espClient;
 //填入从阿里云获取的设备ID
-#define PRODUCT_KEY " "
-#define DEVICE_NAME " "
-#define DEVICE_SECRET " "
+#define PRODUCT_KEY ""
+#define DEVICE_NAME ""
+#define DEVICE_SECRET ""
 #define REGION_ID "cn-shanghai"
 
 // 设置 wifi 信息
-#define WIFI_SSID "名称"
-#define WIFI_PASSWD "密码"
-        
+#define WIFI_SSID ""
+#define WIFI_PASSWD ""
+
+int flag=1;       
 int val = 0;  //A0的数值
 int speaker = D5; //扬声器针脚D5
 int fire = D6;  //火焰传感器针脚D6
@@ -103,6 +104,7 @@ void reCallback(JsonVariant p){
     {
       AliyunIoTSDK::send("flameStatus", 0);//将明火状态重置为0
       ticker3.detach(); //停止扬声器警报(明火)
+      ticker5.detach(); //停止扬声器警报(气体)
     } 
 }
 
@@ -111,14 +113,16 @@ void setdigSmoke(){
   if(smokestate()==1){
     Serial.println("issmoke=1");
     AliyunIoTSDK::send("smokeStatus", smokestate());  //发送气体状态为1
-    ticker5.attach_ms(900,speakerON); //开启扬声器警报(气体)
+    if(flag==1){
+      ticker5.attach_ms(900,speakerON); //开启扬声器警报(气体)
+      flag = 0;
+    }
+    
   }else{
     Serial.println("issmoke=0");
     AliyunIoTSDK::send("smokeStatus", smokestate());  //发送气体状态为0
-    if(isfire==0){
-      ticker5.detach(); //停止扬声器警报(气体)
+    flag=1;
     } 
-  }
 }
 
 //扬声器响警报
