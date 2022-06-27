@@ -17,13 +17,13 @@ Ticker ticker4; //读取并处理可燃气体状态
 Ticker ticker5; //气体报警计时器
 
 static WiFiClient espClient;
-//填入从阿里云获取的设备ID
+//！！！填入从阿里云获取的设备ID！！！
 #define PRODUCT_KEY ""
 #define DEVICE_NAME ""
 #define DEVICE_SECRET ""
 #define REGION_ID "cn-shanghai"
 
-// 设置 wifi 信息
+// ！！！设置 wifi 信息！！！
 #define WIFI_SSID ""
 #define WIFI_PASSWD ""
 
